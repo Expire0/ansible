@@ -44,11 +44,11 @@ EXAMPLES = '''
     - name: Get facts for one availability set
       azure_rm_availabilityset_facts:
         name: Testing
-        resource_group: TestRG
+        resource_group: myResourceGroup
 
     - name: Get facts for all availability sets in a specific resource group
       azure_rm_availabilityset_facts:
-        resource_group: TestRG
+        resource_group: myResourceGroup
 
 '''
 
@@ -59,7 +59,7 @@ azure_availabilityset:
     type: list
     example: [{
         "location": "eastus2",
-        "name": "myavailabilityset",
+        "name": "myAvailabilitySet",
         "properties": {
             "platformFaultDomainCount": 3,
             "platformUpdateDomainCount": 2,

@@ -70,8 +70,8 @@ class DistributionFiles:
         {'path': '/etc/lsb-release', 'name': 'Mandriva'},
         {'path': '/etc/sourcemage-release', 'name': 'SMGL'},
         {'path': '/usr/lib/os-release', 'name': 'ClearLinux'},
-        {'path': '/etc/os-release', 'name': 'NA'},
         {'path': '/etc/coreos/update.conf', 'name': 'Coreos'},
+        {'path': '/etc/os-release', 'name': 'NA'},
     )
 
     SEARCH_STRING = {
@@ -345,6 +345,12 @@ class DistributionFiles:
             release = re.search(r'VERSION="(.*)"', data)
             if release:
                 debian_facts['distribution_release'] = release.groups()[0]
+        elif "Mint" in data:
+            debian_facts['distribution'] = 'Linux Mint'
+            version = re.search(r"VERSION_ID=\"(.*)\"", data)
+            if version:
+                debian_facts['distribution_version'] = version.group(1)
+                debian_facts['distribution_major_version'] = version.group(1).split('.')[0]
         else:
             return False, debian_facts
 
@@ -400,6 +406,11 @@ class DistributionFiles:
         if "clearlinux" not in name.lower():
             return False, clear_facts
 
+        pname = re.search('NAME="(.*)"', data)
+        if pname:
+            if 'Clear Linux' not in pname.groups()[0]:
+                return False, clear_facts
+            clear_facts['distribution'] = pname.groups()[0]
         version = re.search('VERSION_ID=(.*)', data)
         if version:
             clear_facts['distribution_major_version'] = version.groups()[0]
@@ -407,9 +418,6 @@ class DistributionFiles:
         release = re.search('ID=(.*)', data)
         if release:
             clear_facts['distribution_release'] = release.groups()[0]
-        pname = re.search('NAME="(.*)"', data)
-        if pname:
-            clear_facts['distribution'] = pname.groups()[0]
         return True, clear_facts
 
 
@@ -443,8 +451,8 @@ class Distribution(object):
         {'path': '/etc/altlinux-release', 'name': 'Altlinux'},
         {'path': '/etc/sourcemage-release', 'name': 'SMGL'},
         {'path': '/usr/lib/os-release', 'name': 'ClearLinux'},
-        {'path': '/etc/os-release', 'name': 'NA'},
         {'path': '/etc/coreos/update.conf', 'name': 'Coreos'},
+        {'path': '/etc/os-release', 'name': 'NA'},
     )
 
     SEARCH_STRING = {
